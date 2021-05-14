@@ -9,6 +9,8 @@ CCS811 sensor;
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 
+#define TEMPPIN A7
+
 void displaySensorDetails(void)
 {
   sensor_t sensor;
@@ -110,8 +112,8 @@ void displayRange(void)
   }  
   Serial.println(" g");  
 }
-void setup(void)
-{
+
+void setup(void){
   Serial.begin(115200);
 
   while(sensor.begin() != 0){
@@ -147,7 +149,9 @@ void setup(void)
   displayDataRate();
   displayRange();
   Serial.println("");
+  pinMode(TEMPPIN, INPUT);
 }
+
 void loop() {
   delay(1000);
   if(sensor.checkDataReady() == true){
@@ -170,6 +174,13 @@ void loop() {
     /* Get a new sensor event */ 
   sensors_event_t event; 
   accel.getEvent(&event);
+
+  //getting the voltage reading from the temperature sensor
+  int reading = analogRead(TEMPPIN);  
+  // converting that reading to voltage, for 3.3v arduino use 3.3
+  float voltage = reading * 3.3;
+  float temperatureC = (voltage/1024.0 - 0.5) * 100 ;//converting from 10 mv per degree wit 500 mV offset
+  Serial.println("Temp: " + String(temperatureC, DEC));
  
   /* Display the results (acceleration is measured in m/s^2) */
   Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
