@@ -1,12 +1,9 @@
 #ifndef _CCS811_H
 #define _CCS811_H
 
-#if ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 #include <Wire.h>
+#include <stdint.h>
 
 
 /*I2C ADDRESS*/
