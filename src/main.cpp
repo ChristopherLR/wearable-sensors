@@ -177,7 +177,6 @@ void loop() {
 
   //getting the voltage reading from the temperature sensor
   int reading = analogRead(TEMPPIN);  
-  // converting that reading to voltage, for 3.3v arduino use 3.3
   float voltage = reading * 3.3;
   float temperatureC = (voltage/1024.0 - 0.5) * 100 ;//converting from 10 mv per degree wit 500 mV offset
   Serial.println("Temp: " + String(temperatureC, DEC));
